@@ -142,8 +142,23 @@ geos <- counties %>% map(function(s){
   geo.make(state="VA", county= s)
 })
 
-#example finding the codes for "employment" variables
-codes <- acs.lookup(keyword="employment", endyear=2014, case.sensitive=F)
-codes@results$variable.code
+# Grab the interested variables
+keywords <- c("income", "household", "education", "age", "population", "crime", "language")
+
+var.codes <- keywords %>% map(function(s){
+  acs.lookup(keyword=s, endyear=2014, case.sensitive=F) %>% 
+    get("results",.) %>% 
+    get("variable.code",.)}) %>% unique()
+
+var.names <- keywords %>% map(function(s){
+  acs.lookup(keyword=s, endyear=2014, case.sensitive=F) %>% 
+    get("results",.) %>% 
+    get("variable.name",.)})
+
+# Get an error
+#Error in as.environment(pos) : 
+#  S4 object does not extend class "environment" 
+
+
 
 
