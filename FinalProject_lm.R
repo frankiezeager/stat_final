@@ -79,19 +79,23 @@ geos <- counties %>% map(function(s){
 # Grab the interested variables
 keywords <- c("income", "household", "education", "age", "population", "language")
 
-var.codes <- keywords %>% map(function(s){
-  acs.lookup(keyword=s, endyear=2014, case.sensitive=F) %>% 
-    map("results",.) %>% 
-    map("variable.code",.)}) %>% unique()
+# ACS Table Numbers
+table.nums <- keywords %>% map(function(s){
+  acs.lookup(keyword=s, endyear=2013, case.sensitive=F) %@% 
+    "results" %>% 
+    get("table.number",.)}) %>% 
+  unlist() %>% 
+  unique()
 
-var.names <- keywords %>% map(function(s){
-  acs.lookup(keyword=s, endyear=2014, case.sensitive=F) %>% 
-    get("results",.) %>% 
-    get("variable.name",.)})
+# ACS Table Names
+table.names <- keywords %>% map(function(s){
+  acs.lookup(keyword=s, endyear=2013, case.sensitive=F) %@% 
+    "results" %>% 
+    get("table.name",.)}) %>% 
+  unlist() %>% 
+  unique()
 
-# Get an error
-#Error in as.environment(pos) : 
-#  S4 object does not extend class "environment" 
+
 
 
 
