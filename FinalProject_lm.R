@@ -1,4 +1,4 @@
-install.packages("acs")
+
 library(acs)
 acs.tables.install()
 library(dplyr)
@@ -72,9 +72,11 @@ counties <- c("Accomack County " ,
  "Wise County "                    ,"Wythe County "                 , 
  "York County ")
 
+# Not working correctly
 geos <- counties %>% map(function(s){
   geo.make(state="VA", county= s)
 })
+
 
 # Grab the interested variables
 keywords <- c("income", "household", "education", "age", "population", "language")
@@ -94,6 +96,13 @@ table.names <- keywords %>% map(function(s){
     get("table.name",.)}) %>% 
   unlist() %>% 
   unique()
+
+# Do a test with henrico county
+api.key.install(key = "0faa650effb8df6132c2ce382d5af92b827da336")
+test <- acs.fetch(2013, span = 5, keyword = "income", geo.make(state="VA", county= "Henrico County"), dataset = "acs")
+
+##### retrieve the values and put into dataframe #####
+y <- as.data.frame(test@estimate)
 
 
 
