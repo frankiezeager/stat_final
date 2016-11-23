@@ -103,25 +103,25 @@ table.names <- keywords %>% map(function(s){
   unlist() %>% 
   unique()
 
-
-# Do a test with geos.cities
-test1 <- geos.counties %>% map(function(s){
-  acs.fetch(endyear=2013, table.number = "B01003", geography = s, case.sensitive=F) %@%
+tables <- c("B01003","B01002")
+# Do a test with geos.counties
+test1 <- tables %>% map(function(x){
+  geos.counties %>% map(function(s){
+    acs.fetch(endyear=2013, table.number = x, geography = s, case.sensitive=F) %@%
     "estimate" 
-}) %>% 
-  do.call("rbind",.) %>% 
-  as.data.frame()
+}) 
+})  
+t1 <- do.call("rbind", (test1 %>% nth(1)))
+t2 <- do.call("rbind", (test1 %>% nth(2)))
+t <- cbind(t1,t2) %>% as.data.frame()
 
-# got an error here
+# got an error here FOR THE CITIES
 test2 <- geos.cities %>% map(function(s){
   acs.fetch(endyear=2013, table.number = "B01003", geography = s, case.sensitive=F) %@%
     "estimate" 
 }) %>% 
   do.call("rbind",.) %>% 
   as.data.frame()
-
-test <- rbind(test,test2)
-
 
 
 
