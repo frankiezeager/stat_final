@@ -2,6 +2,8 @@ library(acs)
 acs.tables.install()
 library(dplyr)
 library(purrr)
+library(data.table)
+api.key.install(key = "0faa650effb8df6132c2ce382d5af92b827da336")
 
 div <- c("Accomack County" ,                
  "Albemarle County"               ,"Alexandria City"              ,     
@@ -77,12 +79,10 @@ cities <- div[c(129,128,126,125,122,118,117,110,105,103,101,95,94,92,87,84,83,76
 
 # Make geo codes
 geos.counties <- counties %>% map(function(s){
-  geo.make(state="VA", county= s)
-})
+  geo.make(state="VA", county= s)})
+geos.cities <- cities %>%  map(function(s){
+  geo.make(state="VA", msa= s)})
 
-geos.cities <- cities %>% map(function(s){
-  geo.make(state="VA", msa= s)
-})
 
 # Grab the interested variables
 keywords <- c("income", "household", "education", "age", "population", "language")
@@ -103,12 +103,24 @@ table.names <- keywords %>% map(function(s){
   unlist() %>% 
   unique()
 
-# Do a test with henrico county
-api.key.install(key = "0faa650effb8df6132c2ce382d5af92b827da336")
-test <- acs.fetch(2013, span = 5, keyword = "income", geo.make(state="VA", county= "Henrico County"), dataset = "acs")
 
-##### retrieve the values and put into dataframe #####
-y <- as.data.frame(test@estimate)
+# Do a test with geos.cities
+test1 <- geos.counties %>% map(function(s){
+  acs.fetch(endyear=2013, table.number = "B01003", geography = s, case.sensitive=F) %@%
+    "estimate" 
+}) %>% 
+  do.call("rbind",.) %>% 
+  as.data.frame()
+
+# got an error here
+test2 <- geos.cities %>% map(function(s){
+  acs.fetch(endyear=2013, table.number = "B01003", geography = s, case.sensitive=F) %@%
+    "estimate" 
+}) %>% 
+  do.call("rbind",.) %>% 
+  as.data.frame()
+
+test <- rbind(test,test2)
 
 
 
