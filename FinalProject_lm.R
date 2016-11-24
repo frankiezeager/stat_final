@@ -5,6 +5,7 @@ library(purrr)
 library(data.table)
 api.key.install(key = "0faa650effb8df6132c2ce382d5af92b827da336")
 
+###### County and City Breakdown Approach ######
 div <- c("Accomack County" ,                
  "Albemarle County"               ,"Alexandria City"              ,     
  "Alleghany County"               ,"Amelia County"                , 
@@ -102,9 +103,10 @@ table.names <- keywords %>% map(function(s){
     get("table.name",.)}) %>% 
   unlist() %>% 
   unique()
+## wil pare these down later
 
-tables <- c("B01003","B01002")
 # Do a test with geos.counties
+tables <- c("B01003","B01002")
 test1 <- tables %>% map(function(x){
   geos.counties %>% map(function(s){
     acs.fetch(endyear=2013, table.number = x, geography = s, case.sensitive=F) %@%
@@ -115,13 +117,49 @@ t1 <- do.call("rbind", (test1 %>% nth(1)))
 t2 <- do.call("rbind", (test1 %>% nth(2)))
 t <- cbind(t1,t2) %>% as.data.frame()
 
-# got an error here FOR THE CITIES
+# Do a test with geos.cities - got an error here FOR THE CITIES.. not good.
 test2 <- geos.cities %>% map(function(s){
   acs.fetch(endyear=2013, table.number = "B01003", geography = s, case.sensitive=F) %@%
     "estimate" 
 }) %>% 
   do.call("rbind",.) %>% 
   as.data.frame()
+
+# Need an alternative!!
+
+
+########### School District Appraoch ###########
+
+# all unified school districts in Virginia, using the wildcard "*"
+schools <- geo.make(state="VA", school.district.unified="*")
+
+# grab some sample data for all of the school districts of table B01003
+schools.data <- acs.fetch(endyear=2013, table.number = "B01003", geography = schools, case.sensitive=F)
+
+# get the names of the school districts that acs has data for
+school.districts <- schools.data@estimate %@% "dimnames"  %>% nth(1) %>% as.list
+
+# UPDATE the div names by augmenting the character string
+div <- paste(div," Public Schools, Virginia", sep="")
+
+# check that div is contained within school.districts
+checks <- div %in% school.districts
+for (i in (1:length(div))){
+  if (checks[i] == FALSE){
+    print(div[i])
+  }
+}
+# "Colonial Beach Public Schools, Virginia"  - this one is actually "Colonial Beack Town Public Schools, Virginia" in acs
+# "Lexington City Public Schools, Virginia" 
+# "West Point Public Schools, Virginia"  - this one is actually "West Point Town Public Schools" in acs
+# "Williamsburg-James City County Public Schools, Virginia"  - this one is split in acs... so far our project lets just remove it
+
+## fix the 2 issues in div, and delete the others
+div[28] <- "Colonial Beach Town Public Schools, Virginia"
+div[126] <- "West Point Town Public Schools, Virginia"  
+div <- div[-c(68,128)]
+
+
 
 
 
