@@ -160,6 +160,28 @@ div[126] <- "West Point Town Public Schools, Virginia"
 div <- div[-c(68,128)]
 
 
+###########################################
+############### FETCH DATA ################
+###########################################
+
+selections <- c() # will get this soon from group
+table.nums <- table.nums[selections]
+
+# div  = list of school districts we need data for from the SOL score data. subset of school.districts
+# school.districts  =  the geo.set object that we will grab data for from acs.
+# table.nums = the narrowed down list of tables to fetch data from
+
+# This code will take a long time to run!
+acs.data <- table.nums %>% map(function(x){
+  school.districts %>% map(function(s){
+    acs.fetch(endyear=2013, table.number = x, geography = s, case.sensitive=F) %@%
+      "estimate" 
+  }) 
+})  
+acs.dataframe <- (1:length(table.nums)) %>% map(function(z){
+    do.call("rbind", (acs.data %>% nth(z))) %>% 
+    as.data.frame()
+
 
 
 
