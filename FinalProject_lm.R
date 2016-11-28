@@ -5,12 +5,12 @@
 # STAT 6021
 # Final Project
 
-library(acs)
-acs.tables.install()
-library(dplyr)
-library(purrr)
-library(data.table)
-api.key.install(key = "0faa650effb8df6132c2ce382d5af92b827da336")
+suppressPackageStartupMessages({
+  library(acs)
+  library(dplyr)
+  library(purrr)
+  library(dtplyr)
+})
 
 ##################### County and City Breakdown Approach ###############
 div <- c("Accomack County" ,
@@ -20,7 +20,7 @@ div <- c("Accomack County" ,
  "Arlington County"               ,"Augusta County"               ,
  "Bath County"                    ,"Bedford County"               ,
  "Bland County"                   ,"Botetourt County"             ,
- "Bristol City"                   ,"Brunswick County"             , 
+ "Bristol City"                   ,"Brunswick County"             ,
  "Buchanan County"                ,"Buckingham County"            ,
  "Buena Vista City"               ,"Campbell County"              ,
  "Caroline County"                ,"Carroll County"               ,
@@ -205,7 +205,7 @@ acs.df <- (1:length(selections)) %>% map(function(z){
   as.data.frame()
 
 # write out to a csv, change the file = "" to an appropriate place to save
-write.csv(acs.df,file="~/Desktop/Data_Science/Linear_Models/stat_final/acs_data.csv", row.names = TRUE, col.names= TRUE)
+write.csv(acs.df,file="acs_data.csv", row.names = TRUE, col.names= TRUE)
 
 ## NOTE that when we merge with the test data, not all rows from acs.df will be needed for the merge.
 ## Also need to develop a missing value plan
