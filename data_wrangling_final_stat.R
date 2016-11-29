@@ -5,7 +5,10 @@ history<-read.csv('2012-13_history_3-8.csv')
 math<-read.csv('2012-13_math_3-8.csv')
 science<-read.csv('2012-13_science_3-8.csv')
 
-library(dplyr)
+suppressPackageStartupMessages({
+  library(dplyr)
+})
+
 #convert categorical variables into dummy variables
 #reading
 for(level in unique(reading$GENDER)){
