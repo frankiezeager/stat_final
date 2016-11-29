@@ -4,6 +4,8 @@
 
 All the packages must be installed and an active [Census API key](http://api.census.gov/data/key_signup.html) must be installed.
 
+Once the API key is placed in `acs.init.R`, the script can be run to ensure packages are installed and ACS API key and data are cached.
+
 # Pipeline Usage
 
 The Makefile contains the pipeline. To run the full set, execute `make` or `make clean && make all`.
