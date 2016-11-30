@@ -6,13 +6,9 @@ suppressPackageStartupMessages({
   library(stringr)
 })
 
-data <- read_csv("acs_data.csv")
+data_raw <- read_csv("acs_data.csv")
 
-
-data %>% glimpse
-
-
-data %>%
+data_raw %>%
   mutate(health_insurance_coverage_percent = (B27015_003 + B27015_008 + B27015_013 + B27015_018 + B27015_023) / B27015_001) %>% # Health Insurance
   select(-(B27015_001:B27015_026)) %>%
   mutate(housing_units_with_mortgage_percent = B25081_001 / B25081_002) %>% # housing mortgage
@@ -52,5 +48,7 @@ data %>%
   select(-(B25103_001:B25103_003)) %>%
   select(-(B992522_001:B992522_007)) %>%
   mutate(school_district = X1) %>%
-  select(-X1) %>%
-  glimpse
+  select(-X1) ->
+  data_processed
+
+write_csv(data_processed, "acs_data_processed.csv")
