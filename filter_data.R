@@ -10,6 +10,8 @@ data <- read_csv("acs_data.csv")
 
 
 data %>% glimpse
+
+
 data %>%
   mutate(health_insurance_coverage_percent = (B27015_003 + B27015_008 + B27015_013 + B27015_018 + B27015_023) / B27015_001) %>% # Health Insurance
   select(-(B27015_001:B27015_026)) %>%
@@ -38,28 +40,17 @@ data %>%
   mutate(household_foodstamps_percent = (B08137_004 + B08137_007) / B08137_001) %>%
   select(-(B08137_001:B08137_021)) %>%
   select(-(C02003_001:C02003_019)) %>% # Detailed Race
+  select(-(B09001_001:B09001_010)) %>%
+  mutate(unmarried_partner_present_percent = B09008_002 / B09008_001) %>%
+  select(-(B09008_001:B09008_012)) %>%
+  select(-(B11001_001:B11001_009)) %>%
+  select(-(B16010_001:B16010_053)) %>% # Remove Educational Attainment And Employment Status By Language Spoken At Home For The Population 25 Years And Over
+  mutate(house_worth_dollars = B25082_001) %>%
+  select(-(B25082_001:B25082_003)) %>%
+  mutate(non_contributing_households_percent = (B25102_008 + B25102_015) / B25102_001) %>%
+  select(-(B25102_001:B25102_015)) %>%
+  select(-(B25103_001:B25103_003)) %>%
+  select(-(B992522_001:B992522_007)) %>%
+  mutate(school_district = X1) %>%
+  select(-X1) %>%
   glimpse
-
-data %>%
-  names %>%
-  discard(~ . == "X1") %>%
-  discard(function(colName){
-    data[[colName]] %>% is.na %>% sum %>% `/`(nrow(data)) -> per
-    per > 0.2
-  }) -> drop_col_names
-
-
-health_data <- readRDS("temp.rds")
-
-health_data %>% glimpse
-
-(3 + (0:4 * 5)) %>%
-  str_pad(., 3, pad = "0") %>%
-  paste("B27015_",.,sep='')
-
-
-
-str_pad(3, 6, pad = "0")
-
-health_data[1,]
-health_data[2,]
