@@ -8,6 +8,8 @@
 suppressPackageStartupMessages({
   library(dplyr)
   library(purrr)
+  library(mice)
+  library(lattice)
 })
 
 ## Read in the two data files
@@ -179,5 +181,9 @@ merged <- subset(merged, select = -reading.num_frc_NA) %>%
   select(-science.num_frc_NA)
 
 ## Perform Multiple Imputation on the rest of the missing values
+merged.imp <- mice(data=merged, m=10, method = "pmm")
+
+## Write to csv
+write.csv(merged, file="data_merge.csv", row.names = TRUE, col.names= TRUE)
 
 
