@@ -9,7 +9,6 @@ suppressPackageStartupMessages({
   library(acs)
   library(dplyr)
   library(purrr)
-  library(dtplyr)
 })
 
 ##################### County and City Breakdown Approach ###############
@@ -150,12 +149,12 @@ school.districts <- schools.data@estimate %@% "dimnames"  %>% nth(1) %>% as.list
 div <- paste(div," Public Schools, Virginia", sep="")
 
 ## check that div is contained within school.districts
-checks <- div %in% school.districts
-for (i in (1:length(div))){
-  if (checks[i] == FALSE){
-    print(div[i])
-  }
-}
+#checks <- div %in% school.districts
+#for (i in (1:length(div))){
+#  if (checks[i] == FALSE){
+#    print(div[i])
+#  }
+#}
 
 # "Colonial Beach Public Schools, Virginia"  - this one is actually "Colonial Beack Town Public Schools, Virginia" in acs
 # "Lexington City Public Schools, Virginia"
@@ -206,6 +205,9 @@ acs.df <- (1:length(selections)) %>% map(function(z){
 
 # write out to a csv, change the file = "" to an appropriate place to save
 write.csv(acs.df,file="acs_acquisition.csv", row.names = TRUE, col.names= TRUE)
+fileConn <- file("school_districts.txt")
+writeLines(div, fileConn)
+close(fileConn)
 
 ## NOTE that when we merge with the test data, not all rows from acs.df will be needed for the merge.
 ## Also need to develop a missing value plan
