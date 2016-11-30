@@ -1,6 +1,8 @@
 
+acs_data_processed.csv: acs_data.csv
+	Rscript filter_data.R
 
-all: full_data.csv
+acs_data.csv: full_data.csv
 	Rscript FinalProject_lm.R
 
 full_data.csv: 2012-13_science_3-8.csv
