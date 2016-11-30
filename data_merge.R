@@ -10,6 +10,7 @@ suppressPackageStartupMessages({
   library(purrr)
   library(mice)
   library(lattice)
+  library(car)
 })
 
 ## Read in the two data files
@@ -181,9 +182,25 @@ merged <- subset(merged, select = -reading.num_frc_NA) %>%
   select(-science.num_frc_NA)
 
 ## Perform Multiple Imputation on the rest of the missing values
-merged.imp <- mice(data=merged, m=10, method = "pmm")
+subset(merged, select = -c(1,3:17, 19:33, 35:49, 51:65, 67:90)) %>% 
+  mice(m=20, method = "pmm", seed = 0123) -> merged.imp 
+#subset(merged, select = -c(1,3:17, 19:33, 35:49, 51:65, 67:90)) %>% 
+#  mice(m=20, method = "norm.predict", seed = 0123) -> merged.imp2 
 
+
+## Fully imputed data set
+complete(merged.imp,20) %>% 
+  as.data.frame() %>% #impute one more time to catch some that got through
+  mice(m=10, method = "pmm", seed = 0123) %>% 
+  complete(10) %>% 
+  as.data.frame() -> final
+names(final) <- c("Reading.SOL","Writing.SOL","History.SOL","Math.SOL","Science.SOL")
+
+final <- select(merged, -c(2,18,34,50,66)) %>% 
+                  cbind(final,.) %>% 
+                  select(c(6,1:5,7:90))
+  
 ## Write to csv
-write.csv(merged, file="data_merge.csv", row.names = TRUE, col.names= TRUE)
+write.csv(final, file="data_merge.csv")
 
 
