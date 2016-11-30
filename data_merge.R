@@ -159,7 +159,25 @@ tests <- tests[,-c(1)]
 ## Merge the data frames
 merged <- merge(tests, acs, by = intersect(names(tests),names(acs)), all.x = TRUE, all.y = FALSE)
 
+## Check levels of missingness
+check <- function(data){
+  data %>%
+  names %>%
+  discard(function(colName){
+    data[[colName]] %>% is.na %>% sum %>% `/`(nrow(data)) -> per
+    per < 0.2 })
+}
 
+# check(merged) 
+# "reading.num_frc_NA" "writing.num_frc_NA" "history.num_frc_NA" "math.num_frc_NA"    "science.num_frc_NA"
 
+## Drop columns that have a missingness level greater than 20%
+merged <- subset(merged, select = -reading.num_frc_NA) %>% 
+  select(-writing.num_frc_NA) %>% 
+  select(-history.num_frc_NA) %>% 
+  select(-math.num_frc_NA) %>% 
+  select(-science.num_frc_NA)
+
+## Perform Multiple Imputation on the rest of the missing values
 
 
