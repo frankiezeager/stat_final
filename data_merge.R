@@ -153,7 +153,11 @@ tests$DIV_NAME[28] <- "Colonial Beach Town Public Schools, Virginia"
 tests$DIV_NAME[126] <- "West Point Town Public Schools, Virginia"
 tests <- tests[-c(68,128),]
 as.list(tests$DIV_NAME) %in% school.districts %>% sum %>% `/`(length(school.districts)) #check to make sure
+tests$school_district <- tests$DIV_NAME 
+tests <- tests[,-c(1)]
 
+## Merge the data frames
+merged <- merge(tests, acs, by = intersect(names(tests),names(acs)), all.x = TRUE, all.y = FALSE)
 
 
 
