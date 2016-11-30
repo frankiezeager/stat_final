@@ -14,7 +14,7 @@ suppressPackageStartupMessages({
 acs <- read.csv("acs_wrangling.csv", header=TRUE)
 tests <- read.csv("education_data_wrangling.csv", header=TRUE) 
 tests <- tests[-c(1),-c(1)]
-tests$DIV_NAME <- paste(tests$DIV_NAME, ' Public Schools, Virginia', sep="")           
+tests$DIV_NAME <- paste(tests$DIV_NAME, 'Public Schools, Virginia', sep="")           
 
 ## The final list of school districts
 school.districts <- c("Accomack County Public Schools, Virginia",   
@@ -146,6 +146,16 @@ school.districts <- c("Accomack County Public Schools, Virginia",
                       "Winchester City Public Schools, Virginia",
                       "Wise County Public Schools, Virginia",
                       "Wythe County Public Schools, Virginia",
-                      "York County Public Schools, Virginia")                      
+                      "York County Public Schools, Virginia") %>% as.list()  
 
-                      
+## Fix the county names and double check the list
+tests$DIV_NAME[28] <- "Colonial Beach Town Public Schools, Virginia"
+tests$DIV_NAME[126] <- "West Point Town Public Schools, Virginia"
+tests <- tests[-c(68,128),]
+as.list(tests$DIV_NAME) %in% school.districts %>% sum %>% `/`(length(school.districts)) #check to make sure
+
+
+
+
+
+
