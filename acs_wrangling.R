@@ -6,7 +6,7 @@ suppressPackageStartupMessages({
   library(stringr)
 })
 
-data_raw <- read_csv("acs_data.csv")
+data_raw <- read_csv("acs_acquisition.csv")
 
 data_raw %>%
   mutate(health_insurance_coverage_percent = (B27015_003 + B27015_008 + B27015_013 + B27015_018 + B27015_023) / B27015_001) %>% # Health Insurance
@@ -51,4 +51,4 @@ data_raw %>%
   select(-X1) ->
   data_processed
 
-write_csv(data_processed, "acs_data_processed.csv")
+write_csv(data_processed, "acs_wrangling.csv")
