@@ -1,10 +1,14 @@
 
+all: acs_wrangling.csv education_data_wrangling.csv
 
-all: full_data.csv
-	Rscript FinalProject_lm.R
+acs_wrangling.csv: acs_acquisition.csv
+	Rscript acs_wrangling.R
 
-full_data.csv: 2012-13_science_3-8.csv
-	Rscript data_wrangling_final_stat.R
+acs_acquisition.csv:
+	Rscript acs_acquisition.R
+
+education_data_wrangling.csv: 2012-13_science_3-8.csv
+	Rscript education_data_wrangling.R
 
 2012-13_science_3-8.csv:
 	unzip -o \*.zip

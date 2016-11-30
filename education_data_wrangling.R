@@ -153,6 +153,6 @@ fully_merged<-merge(fully_merged,history.grouped,by='DIV_NAME')
 fully_merged<-merge(fully_merged,math.grouped, by='DIV_NAME')
 fully_merged<-merge(fully_merged,science.grouped,by='DIV_NAME')
 
-write.csv(fully_merged,'full_data.csv')
+write.csv(fully_merged,'education_data_wrangling.csv')
 
 #writing<-merge(writing,writing,by='DIV_NAME')

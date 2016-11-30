@@ -205,7 +205,7 @@ acs.df <- (1:length(selections)) %>% map(function(z){
   as.data.frame()
 
 # write out to a csv, change the file = "" to an appropriate place to save
-write.csv(acs.df,file="acs_data.csv", row.names = TRUE, col.names= TRUE)
+write.csv(acs.df,file="acs_acquisition.csv", row.names = TRUE, col.names= TRUE)
 
 ## NOTE that when we merge with the test data, not all rows from acs.df will be needed for the merge.
 ## Also need to develop a missing value plan
