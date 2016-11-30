@@ -1,5 +1,8 @@
 
-all: acs_wrangling.csv education_data_wrangling.csv
+all: data_merge.csv
+
+data_merge.csv: acs_wrangling.csv education_data_wrangling.csv
+	Rscript data_merge.R
 
 acs_wrangling.csv: acs_acquisition.csv
 	Rscript acs_wrangling.R
