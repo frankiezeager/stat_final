@@ -336,3 +336,19 @@ plot(lm.science.full4)
 #residual plot: some definite outliers, but nothing too severe
 #qq plot:may be indicative of non-normality
 
+######################################################
+# Look at model summaries for the full models
+
+summary(lm.reading.full)
+summary(lm.writing.full2)
+summary(lm.history.full2)
+summary(lm.math.full3)
+summary(lm.science.full4)
+
+
+
+
+
+
+
+
