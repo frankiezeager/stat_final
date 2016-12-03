@@ -1,26 +1,29 @@
-###### DATA VIZ #########
-
+###################################
+############ DATA VIZ #############
+###################################
 
 full_data<-read.csv('data_merge.csv')
 
-#reassign family income variable and house worth
+# reassign family income variable and house worth
 full_data$family_income_median_adj<-full_data$family_income_median/1000
 full_data$house_worth_dollars_adj <- full_data$house_worth_dollars/1000000
 
-######################################################
+##########################################################################
 # Some scatter plots
 library(ggplot2)
 library(gridExtra)
+library(dplyr)
+library(purrr)
 
 income.read <- ggplot(full_data, aes(x = family_income_median_adj, y = Reading.SOL))
-#p1 <- income.read +geom_point()
-#p1
+# p1 <- income.read +geom_point()
+# p1
 p2 <- income.read + geom_point(aes(size=house_worth_dollars_adj))
 p2 #this is neat
 
 partner.read <- ggplot(full_data, aes(x = unmarried_partner_present_percent, y = Reading.SOL))
-#p3 <- partner.read + geom_point()
-#p3
+# p3 <- partner.read + geom_point()
+# p3
 p4 <- partner.read + geom_point(aes(size=family_income_median_adj))
 p4
 
@@ -55,7 +58,7 @@ p11
 partner.science <- ggplot(full_data, aes(x = unmarried_partner_present_percent, y = Science.SOL))
 p12 <- partner.science + geom_point(aes(size=family_income_median_adj))
 p12
-#############
+##########################
 read.write <- ggplot(full_data, aes(x=Reading.SOL, y=Writing.SOL))
 t1 <- read.write + geom_point()
 t1  # problem found
@@ -64,9 +67,9 @@ math.science <- ggplot(full_data, aes(x=Math.SOL, y=Science.SOL))
 t2 <- math.science + geom_point()
 t2 <- t2 + geom_point(aes(size=house_worth_dollars_adj))
 t2
-############
+#################################################################################################
 
-## MAPS ##
+###### MAPS ########
 library(maptools)
 library(rgeos)
 library(Cairo)
@@ -78,9 +81,17 @@ set.seed(8000)
 # set directory to the folder where the shapefile is, then input shapefile
 setwd("tl_2014_51_unsd/")
 virginia.shp <- readShapeSpatial("tl_2014_51_unsd.shp") %>% 
-  fortify()
+  fortify(region = "NAME") %>% 
+  mutate(id = paste(virginia.shp$id, ", Virginia", sep=""))
 
+full_data$id <- full_data$school_district
+merge.shp <- merge(virginia.shp, full_data, by="id", all.y=TRUE) #issue here
+final.plot<-merge.shp[order(merge.shp$order), ] 
 
+va <- ggplot() + 
+  geom_polygon(data = final.plot, aes(x = long, y = lat, group = group, fill=Reading.SOL), color= "black", size = 0.25) + 
+  coord_map() #here
+va #and here
 
 
 
