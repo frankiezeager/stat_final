@@ -82,17 +82,32 @@ set.seed(8000)
 setwd("tl_2014_51_unsd/")
 virginia.shp <- readShapeSpatial("tl_2014_51_unsd.shp") %>% 
   fortify(region = "NAME") %>% 
-  mutate(id = paste(virginia.shp$id, ", Virginia", sep=""))
+  mutate(id = paste(id, ", Virginia", sep=""))
 
 full_data$id <- full_data$school_district
-merge.shp <- merge(virginia.shp, full_data, by="id", all.y=TRUE) #issue here
+merge.shp <- merge(virginia.shp, full_data, by="id", all.y=TRUE) 
 final.plot<-merge.shp[order(merge.shp$order), ] 
 
 va <- ggplot() + 
-  geom_polygon(data = final.plot, aes(x = long, y = lat, group = group, fill=Reading.SOL), color= "black", size = 0.25) + 
-  coord_map() #here
-va #and here
+  geom_polygon(data = final.plot, aes(x = long, y = lat, group = group), color= "black", size = 0.25) + 
+  coord_map()
 
+va.reading <- ggplot() + 
+  geom_polygon(data = final.plot, aes(x = long, y = lat, group = group, fill = Reading.SOL), color= "black", size = 0.25) + 
+  coord_map()
+va.writing <- ggplot() + 
+  geom_polygon(data = final.plot, aes(x = long, y = lat, group = group, fill = Writing.SOL), color= "black", size = 0.25) + 
+  coord_map()
+va.history <- ggplot() + 
+  geom_polygon(data = final.plot, aes(x = long, y = lat, group = group, fill = History.SOL), color= "black", size = 0.25) + 
+  coord_map()
+va.math <- ggplot() + 
+  geom_polygon(data = final.plot, aes(x = long, y = lat, group = group, fill = Math.SOL), color= "black", size = 0.25) + 
+  coord_map()
+va.science <- ggplot() + 
+  geom_polygon(data = final.plot, aes(x = long, y = lat, group = group, fill = Science.SOL), color= "black", size = 0.25) + 
+  coord_map()
+grid.arrange(va.reading, va.writing, va.history, va.math, va.science, nrow=2)
 
 
 
