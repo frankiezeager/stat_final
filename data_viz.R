@@ -74,10 +74,7 @@ read.math
 
 ###### MAPS ########
 library(maptools)
-#library(rgeos)
-#library(Cairo)
 library(ggmap)
-#library(scales)
 library(RColorBrewer)
 set.seed(12345)
 setwd("tl_2014_51_unsd/")
@@ -96,18 +93,9 @@ virginia.shp <- virginia.shp[order(virginia.shp$order),]
 va.reading <- ggplot() + 
   geom_polygon(data = virginia.shp, aes(x = long, y = lat, group = group, fill = Reading.SOL), color= "black", size = 0.25) + 
   coord_map()
-#va.writing <- ggplot() + 
- # geom_polygon(data = virginia.shp, aes(x = long, y = lat, group = group, fill = Writing.SOL), color= "black", size = 0.25) + 
-  #coord_map()
-#va.history <- ggplot() + 
- # geom_polygon(data = virginia.shp, aes(x = long, y = lat, group = group, fill = History.SOL), color= "black", size = 0.25) + 
-  #coord_map()
 va.math <- ggplot() + 
   geom_polygon(data = virginia.shp, aes(x = long, y = lat, group = group, fill = Math.SOL), color= "black", size = 0.25) + 
   coord_map()
-#va.science <- ggplot() + 
- # geom_polygon(data = virginia.shp, aes(x = long, y = lat, group = group, fill = Science.SOL), color= "black", size = 0.25) + 
-  #coord_map()
 
 grid.arrange(va.reading, va.math, nrow=1)
 
