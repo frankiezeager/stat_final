@@ -72,10 +72,11 @@ read.math <- ggplot(full_data, aes(x=Math.SOL, y=Reading.SOL)) + geom_point(aes(
 read.math
 #################################################################################################
 
-###### MAPS ########
+###### SOL SCORE MAPS ########
 library(maptools)
 library(ggmap)
 library(RColorBrewer)
+library(scales)
 set.seed(12345)
 setwd("tl_2014_51_unsd/")
 
@@ -90,14 +91,21 @@ readShapeSpatial("tl_2014_51_unsd.shp") %>%
 # Order the rows
 virginia.shp <- virginia.shp[order(virginia.shp$order),]
 
+# Make the maps
 va.reading <- ggplot() + 
   geom_polygon(data = virginia.shp, aes(x = long, y = lat, group = group, fill = Reading.SOL), color= "black", size = 0.25) + 
-  coord_map()
+  coord_map() +
+  labs(title="Reading SOL Scores in Virginia") +
+  scale_fill_distiller(name="Reading SOL", palette = "YlGn", breaks = pretty_breaks(n = 5), trans="reverse")+
+  theme_nothing(legend = TRUE)
 va.math <- ggplot() + 
   geom_polygon(data = virginia.shp, aes(x = long, y = lat, group = group, fill = Math.SOL), color= "black", size = 0.25) + 
-  coord_map()
+  coord_map() +
+  labs(title="Math SOL Scores in Virginia") +
+  scale_fill_distiller(name="Math SOL", palette = "YlGn", breaks = pretty_breaks(n = 5), trans="reverse")+
+  theme_nothing(legend = TRUE)
 
-grid.arrange(va.reading, va.math, nrow=1)
+grid.arrange(va.reading, va.math, nrow=2)
 
 
 
