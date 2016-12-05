@@ -9,7 +9,7 @@ options(scipen=999)
 #just education data/ race flags
 
 #reassign family income variable
-full_data$family_income_median_adj<-full_data$family_income_median/1000
+full_data$family_income_median<-full_data$family_income_median_adj/1000
 ########################################################################
 #reading
 #just education data
@@ -55,7 +55,7 @@ plot(lm.reading.county)
 lm.reading.full<-lm(Reading.SOL~reading.num_female+reading.num_frc_1+reading.num_frc_2+
                       reading.num_frc_3+reading.num_frc_6+reading.num_frc_99+reading.disability_flag+
                       reading.lep_flag+reading.disadvantaged_flag+health_insurance_coverage_percent+
-                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median+
+                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median_adj+
                       household_foodstamps_percent+unmarried_partner_present_percent+house_worth_dollars+non_contributing_households_percent
                     ,data=full_data)
 #check for multicollinearity
@@ -108,7 +108,7 @@ plot(lm.writing.county)
 lm.writing.full<-lm(Writing.SOL~writing.num_female+writing.num_frc_1+writing.num_frc_2+
                       writing.num_frc_3+writing.num_frc_4+writing.num_frc_6+writing.num_frc_99+writing.disability_flag+
                       writing.lep_flag+writing.disadvantaged_flag+health_insurance_coverage_percent+
-                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median+
+                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median_adj+
                       household_foodstamps_percent+unmarried_partner_present_percent+house_worth_dollars+non_contributing_households_percent
                     ,data=full_data)
 #check for multicollinearity
@@ -117,11 +117,11 @@ vif(lm.writing.full)
 lm.writing.full2<-lm(Writing.SOL~writing.num_female+writing.num_frc_1+writing.num_frc_2+
                       writing.num_frc_3+writing.num_frc_6+writing.num_frc_99+writing.disability_flag+
                       writing.lep_flag+writing.disadvantaged_flag+health_insurance_coverage_percent+
-                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median+
+                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median_adj+
                       household_foodstamps_percent+unmarried_partner_present_percent+house_worth_dollars+non_contributing_households_percent
                     ,data=full_data)
 vif(lm.writing.full2)
-#so the family_income_median variable is almost problematic at 4.6, but it
+#so the family_income_median_adj variable is almost problematic at 4.6, but it
 #is a pretty important variable in our analysis, so we'll keep it
 
 #plots
@@ -166,7 +166,7 @@ plot(lm.history.county)
 lm.history.full<-lm(History.SOL~history.num_female+history.num_frc_1+history.num_frc_2+
                       history.num_frc_3+history.num_frc_4+history.num_frc_6+history.num_frc_99+history.disability_flag+
                       history.lep_flag+history.disadvantaged_flag+health_insurance_coverage_percent+
-                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median+
+                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median_adj+
                       household_foodstamps_percent+unmarried_partner_present_percent+house_worth_dollars+non_contributing_households_percent
                     ,data=full_data)
 vif(lm.history.full)
@@ -174,11 +174,11 @@ vif(lm.history.full)
 lm.history.full2<-lm(History.SOL~history.num_female+history.num_frc_1+history.num_frc_2+
                       history.num_frc_3+history.num_frc_6+history.num_frc_99+history.disability_flag+
                       history.lep_flag+history.disadvantaged_flag+health_insurance_coverage_percent+
-                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median+
+                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median_adj+
                       household_foodstamps_percent+unmarried_partner_present_percent+house_worth_dollars+non_contributing_households_percent
                     ,data=full_data)
 vif(lm.history.full2)
-#so the family_income_median variable is almost problematic at 4.8, but it
+#so the family_income_median_adj variable is almost problematic at 4.8, but it
 #is a pretty important variable in our analysis, so we'll keep it
 
 
@@ -225,7 +225,7 @@ plot(lm.math.county)
 lm.math.full<-lm(Math.SOL~math.num_female+math.num_frc_1+math.num_frc_2+
                       math.num_frc_3+math.num_frc_4+math.num_frc_6+math.num_frc_99+math.disability_flag+
                       math.lep_flag+math.disadvantaged_flag+health_insurance_coverage_percent+
-                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median+
+                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median_adj+
                       household_foodstamps_percent+unmarried_partner_present_percent+house_worth_dollars+non_contributing_households_percent
                     ,data=full_data)
 vif(lm.math.full)
@@ -234,7 +234,7 @@ vif(lm.math.full)
 lm.math.full2<-lm(Math.SOL~math.num_female+math.num_frc_1+math.num_frc_2+
                    math.num_frc_3+math.num_frc_6+math.num_frc_99+math.disability_flag+
                    math.lep_flag+math.disadvantaged_flag+health_insurance_coverage_percent+
-                   housing_units_with_mortgage_percent+poverty_students_percent+family_income_median+
+                   housing_units_with_mortgage_percent+poverty_students_percent+family_income_median_adj+
                    household_foodstamps_percent+unmarried_partner_present_percent+house_worth_dollars+non_contributing_households_percent
                  ,data=full_data)
 vif(lm.math.full2)
@@ -292,7 +292,7 @@ plot(lm.science.county)
 lm.science.full<-lm(Science.SOL~science.num_female+science.num_frc_1+science.num_frc_2+
                       science.num_frc_3+science.num_frc_4+science.num_frc_6+science.num_frc_99+science.disability_flag+
                       science.lep_flag+science.disadvantaged_flag+health_insurance_coverage_percent+
-                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median+
+                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median_adj+
                       household_foodstamps_percent+unmarried_partner_present_percent+house_worth_dollars+non_contributing_households_percent
                     ,data=full_data)
 
@@ -302,7 +302,7 @@ vif(lm.science.full)
 lm.science.full2<-lm(Science.SOL~science.num_female+science.num_frc_1+science.num_frc_2+
                       science.num_frc_3+science.num_frc_6+science.num_frc_99+science.disability_flag+
                       science.lep_flag+science.disadvantaged_flag+health_insurance_coverage_percent+
-                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median+
+                      housing_units_with_mortgage_percent+poverty_students_percent+family_income_median_adj+
                       household_foodstamps_percent+unmarried_partner_present_percent+house_worth_dollars+non_contributing_households_percent
                     ,data=full_data)
 
@@ -336,19 +336,23 @@ plot(lm.science.full4)
 #residual plot: some definite outliers, but nothing too severe
 #qq plot:may be indicative of non-normality
 
+
 ######################################################
 # Look at model summaries for the full models
 
-summary(lm.reading.full)
-summary(lm.writing.full2)
-summary(lm.history.full2)
-summary(lm.math.full3)
-summary(lm.science.full4)
+#summary(lm.reading.full)
+#summary(lm.writing.full2)
+#summary(lm.history.full2)
+#summary(lm.math.full3)
+#summary(lm.science.full4)
 
 
+###########
+#based on the vif values (removing the least amount of variables),
+#and on the breadth of information , we chose to focus just on the math
+#and reading test models, which we output below into a table
 
-
-
-
-
+#library(stargazer)
+#stargazer(lm.reading.edu2,lm.reading.county,lm.reading.full,type='text',report='vcp*')
+#stargazer(lm.math.edu2,lm.math.county,lm.math.full3,type='text',report='vcp*')
 
