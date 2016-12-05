@@ -1,7 +1,7 @@
 
-all: MathSOL.png
+all: images/MathSOL.png
 
-MathSOL.png: data_merge.csv
+images/MathSOL.png: data_merge.csv
 	Rscript data_viz.R
 
 data_merge.csv: acs_wrangling.csv education_data_wrangling.csv
@@ -24,5 +24,5 @@ clean:
 
 clean-safe:
 	-ls *.csv | grep -v acs_acquisition.csv | xargs rm
-	-rm *.png
+	-rm images/\*.png
 	-rm *.pdf
