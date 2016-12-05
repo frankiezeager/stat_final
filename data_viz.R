@@ -23,28 +23,44 @@ theme <- theme(
 
 income.read <- ggplot(full_data, aes(x = family_income_median_adj, y = Reading.SOL)) +
   geom_point(aes(size=house_worth_dollars_adj)) +
-  scale_size_continuous(name ="House Worth (in millions $)", range=c(0.5,6)) +
+  scale_size_continuous(name ="House Worth (millions $)", range=c(0.5,6), labels=waiver()) +
   theme_bw() + theme +
-  labs(title="Reading SOL Scores vs Median Income", x="Median Family Income", y="Reading SOL Scores") 
+  labs(title="Reading SOL Scores vs Median Income", x="Median Family Income", y="Reading SOL Scores") +
+  theme(legend.position=c(1,0),legend.justification=c(1,0)) 
 income.read 
 
 partner.read <- ggplot(full_data, aes(x = unmarried_partner_present_percent, y = Reading.SOL)) + 
   geom_point(aes(size=family_income_median_adj)) +
-  scale_size_continuous(name ="Median Family Income", range=c(0.2,4)) +
+  scale_size_continuous(name ="Median Income (thousands $)", range=c(0.2,4)) +
   theme_bw() + theme +
-  labs(title="Reading SOL Scores vs Presence of Unmarried Partner", x="% of Homes with Unmarried Partner Present (by county)", y="Reading SOL Scores") 
+  labs(title="Reading SOL Scores vs Presence of Unmarried Partner", x="% of Homes with Unmarried Partner Present (by county)", y="Reading SOL Scores") +
+  theme(legend.position=c(1,1),legend.justification=c(1,1)) 
 partner.read
 
-income.math <- ggplot(full_data, aes(x = family_income_median_adj, y = Math.SOL))
-income.math <- income.math + geom_point(aes(size=house_worth_dollars_adj))
+income.math <- ggplot(full_data, aes(x = family_income_median_adj, y = Math.SOL)) +
+  geom_point(aes(size=house_worth_dollars_adj)) +
+  scale_size_continuous(name ="House Worth (millions $)", range=c(0.5,6), labels=waiver()) +
+  theme_bw() + theme +
+  labs(title="Math SOL Scores vs Median Income", x="Median Family Income", y="Math SOL Scores") +
+  theme(legend.position=c(1,0),legend.justification=c(1,0)) 
 income.math 
 
-partner.math <- ggplot(full_data, aes(x = unmarried_partner_present_percent, y = Math.SOL))
-partner.math <- partner.math + geom_point(aes(size=family_income_median_adj))
+partner.math <- ggplot(full_data, aes(x = unmarried_partner_present_percent, y = Math.SOL)) +
+  geom_point(aes(size=family_income_median_adj)) +
+  scale_size_continuous(name ="Median Income (thousands $)", range=c(0.2,4)) +
+  theme_bw() + theme +
+  labs(title="Math SOL Scores vs Presence of Unmarried Partner", x="% of Homes with Unmarried Partner Present (by county)", y="Math SOL Scores") +
+  theme(legend.position=c(1,1),legend.justification=c(1,1)) 
 partner.math
 
-read.math <- ggplot(full_data, aes(x=Math.SOL, y=Reading.SOL)) + geom_point(aes(size=house_worth_dollars_adj))
+read.math <- ggplot(full_data, aes(x=Math.SOL, y=Reading.SOL)) + 
+  geom_point(aes(size=house_worth_dollars_adj)) +
+  scale_size_continuous(name ="House Worth (millions $)", range=c(0.5,6), labels=waiver()) +
+  theme_bw() + theme +
+  labs(title="Math vs Reading SOL Scores", x="Math SOL Scores", y="Reading SOL Scores") +
+  theme(legend.position=c(1,0),legend.justification=c(1,0)) 
 read.math
+
 #################################################################################################
 
 ###### SOL SCORE MAPS ########
