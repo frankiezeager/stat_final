@@ -1,5 +1,13 @@
 # STAT6021 Final Project
 
+## Results
+
+![Choropleth maps](images/map_plots.png "Choropleth maps")
+
+Reading vs Math, including home values.
+![Reading vs Math, including home values](images/read.math.png "Reading vs Math, including home values")
+
+
 ## Usage
 
 ### Initial Setup
