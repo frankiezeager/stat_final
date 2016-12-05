@@ -85,7 +85,7 @@ gpclibPermit()
 full_data$id <- full_data$school_district
 
 # Input shapefile and merge with necessary data
-file.path("tl_2014_51_unsd", "tl_2014_51_unsd.shp") %>%
+file.path("shapefiles", "tl_2014_51_unsd", "tl_2014_51_unsd.shp") %>%
   readShapeSpatial() %>%
   fortify(region = "NAME") %>%
   mutate(id = paste(id, ", Virginia", sep="")) %>%
