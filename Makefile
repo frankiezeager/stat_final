@@ -17,7 +17,7 @@ education_data_wrangling.csv: 2012-13_science_3-8.csv
 	Rscript education_data_wrangling.R
 
 2012-13_science_3-8.csv:
-	unzip -o \*.zip
+	unzip -o data/\*.zip
 
 clean:
 	rm *.csv
