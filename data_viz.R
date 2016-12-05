@@ -27,7 +27,7 @@ income.read <- ggplot(full_data, aes(x = family_income_median_adj, y = Reading.S
   theme_bw() + theme +
   labs(title="Reading SOL Scores vs Median Income", x="Median Family Income", y="Reading SOL Scores") +
   theme(legend.position=c(1,0),legend.justification=c(1,0)) 
-income.read 
+ggsave(file.path("images", "income.read.png"), income.read)
 
 partner.read <- ggplot(full_data, aes(x = unmarried_partner_present_percent, y = Reading.SOL)) + 
   geom_point(aes(size=family_income_median_adj)) +
@@ -35,7 +35,7 @@ partner.read <- ggplot(full_data, aes(x = unmarried_partner_present_percent, y =
   theme_bw() + theme +
   labs(title="Reading SOL Scores vs Presence of Unmarried Partner", x="% of Homes with Unmarried Partner Present (by county)", y="Reading SOL Scores") +
   theme(legend.position=c(1,1),legend.justification=c(1,1)) 
-partner.read
+ggsave(file.path("images", "partner.read.png"), partner.read)
 
 income.math <- ggplot(full_data, aes(x = family_income_median_adj, y = Math.SOL)) +
   geom_point(aes(size=house_worth_dollars_adj)) +
@@ -43,7 +43,7 @@ income.math <- ggplot(full_data, aes(x = family_income_median_adj, y = Math.SOL)
   theme_bw() + theme +
   labs(title="Math SOL Scores vs Median Income", x="Median Family Income", y="Math SOL Scores") +
   theme(legend.position=c(1,0),legend.justification=c(1,0)) 
-income.math 
+ggsave(file.path("images", "income.math.png"), income.math)
 
 partner.math <- ggplot(full_data, aes(x = unmarried_partner_present_percent, y = Math.SOL)) +
   geom_point(aes(size=family_income_median_adj)) +
@@ -51,7 +51,8 @@ partner.math <- ggplot(full_data, aes(x = unmarried_partner_present_percent, y =
   theme_bw() + theme +
   labs(title="Math SOL Scores vs Presence of Unmarried Partner", x="% of Homes with Unmarried Partner Present (by county)", y="Math SOL Scores") +
   theme(legend.position=c(1,1),legend.justification=c(1,1)) 
-partner.math
+ggsave(file.path("images", "partner.math.png"), partner.math)
+
 
 read.math <- ggplot(full_data, aes(x=Math.SOL, y=Reading.SOL)) + 
   geom_point(aes(size=house_worth_dollars_adj)) +
@@ -59,7 +60,7 @@ read.math <- ggplot(full_data, aes(x=Math.SOL, y=Reading.SOL)) +
   theme_bw() + theme +
   labs(title="Math vs Reading SOL Scores", x="Math SOL Scores", y="Reading SOL Scores") +
   theme(legend.position=c(1,0),legend.justification=c(1,0)) 
-read.math
+ggsave(file.path("images", "read.math.png"), read.math)
 
 #################################################################################################
 
@@ -70,15 +71,16 @@ library(RColorBrewer)
 library(scales)
 library(Cairo)
 set.seed(12345)
-setwd("tl_2014_51_unsd/")
+gpclibPermit()
 
 full_data$id <- full_data$school_district
 
 # Input shapefile and merge with necessary data
-readShapeSpatial("tl_2014_51_unsd.shp") %>% 
-  fortify(region = "NAME") %>% 
-  mutate(id = paste(id, ", Virginia", sep="")) %>% 
-  merge(full_data, by="id", all.y=TRUE) -> virginia.shp 
+file.path("shapefiles", "tl_2014_51_unsd", "tl_2014_51_unsd.shp") %>%
+  readShapeSpatial() %>%
+  fortify(region = "NAME") %>%
+  mutate(id = paste(id, ", Virginia", sep="")) %>%
+  merge(full_data, by="id", all.y=TRUE) -> virginia.shp
 
 # Order the rows
 virginia.shp <- virginia.shp[order(virginia.shp$order),]
@@ -91,6 +93,7 @@ va.reading <- ggplot() +
   theme_nothing(legend = TRUE) +
   ggtitle("Reading SOL Scores in Virginia") + 
   theme(plot.title = element_text(size = 12, face="bold"))
+
 va.math <- ggplot() + 
   geom_polygon(data = virginia.shp, aes(x = long, y = lat, group = group, fill = Math.SOL), color= "black", size = 0.25) + 
   coord_map() +
@@ -99,13 +102,6 @@ va.math <- ggplot() +
   ggtitle("Math SOL Scores in Virginia") + 
   theme(plot.title = element_text(size = 12, face="bold"))
 
-# Save the plots
-path <- "~/Desktop/Data_Science/Linear_Models/stat_final"
-setwd(path)
-ggsave(va.reading, file = "ReadingSOL.png", width = 6, height = 4.5, type = "cairo-png")
-ggsave(va.math, file = "MathSOL.png", width = 6, height = 4.5, type = "cairo-png")
-
-
-
-
+ggsave(file.path("images", "MathSOL.png"), va.math)
+ggsave(file.path("images", "ReadingSOL.png"), va.reading)
 
