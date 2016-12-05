@@ -35,3 +35,12 @@ Run each script in the pipeline manually:
 For each, run `Rscript script_name.R`. Or, in RStudio, open `script_name.R`, set the working directory to the project root (ie. Session -> Set Working Directory -> To Source File Location) and run the script. `some_data.csv` will be written to the project directory.
 
 The end results are placed in the `images/` directory.
+
+
+## License
+
+The code in this project is [MIT licensed](LICENSE.md).
+
+The included data from the State of Virginia falls under the public domain and can be found at the [VDOE website](http://www.doe.virginia.gov/statistics_reports/research_data/).
+
+The American Community Survey is provided by the [US Census Bureau](http://www.census.gov/programs-surveys/acs/) and requires an API key.
