@@ -29,7 +29,7 @@ partner.read
 
 #income.write <- ggplot(full_data, aes(x = family_income_median_adj, y = Writing.SOL))
 #p5 <- income.write + geom_point(aes(size=house_worth_dollars_adj))
-#p5 
+#p5
 
 #partner.write <- ggplot(full_data, aes(x = unmarried_partner_present_percent, y = Writing.SOL))
 #p6 <- partner.write + geom_point(aes(size=family_income_median_adj))
@@ -37,7 +37,7 @@ partner.read
 
 #income.history <- ggplot(full_data, aes(x = family_income_median_adj, y = History.SOL))
 #p7 <- income.history + geom_point(aes(size=house_worth_dollars_adj))
-#p7 
+#p7
 
 #partner.history <- ggplot(full_data, aes(x = unmarried_partner_present_percent, y = History.SOL))
 #p8 <- partner.history + geom_point(aes(size=family_income_median_adj))
@@ -45,7 +45,7 @@ partner.read
 
 income.math <- ggplot(full_data, aes(x = family_income_median_adj, y = Math.SOL))
 income.math <- income.math + geom_point(aes(size=house_worth_dollars_adj))
-income.math 
+income.math
 
 partner.math <- ggplot(full_data, aes(x = unmarried_partner_present_percent, y = Math.SOL))
 partner.math <- partner.math + geom_point(aes(size=family_income_median_adj))
@@ -61,7 +61,7 @@ partner.math
 ##########################
 #read.write <- ggplot(full_data, aes(x=Reading.SOL, y=Writing.SOL))
 #t1 <- read.write + geom_point()
-#t1  
+#t1
 
 #math.science <- ggplot(full_data, aes(x=Math.SOL, y=Science.SOL))
 #t2 <- math.science + geom_point()
@@ -78,38 +78,32 @@ library(ggmap)
 library(RColorBrewer)
 library(scales)
 set.seed(12345)
-setwd("tl_2014_51_unsd/")
+gpclibPermit()
 
 full_data$id <- full_data$school_district
 
 # Input shapefile and merge with necessary data
-readShapeSpatial("tl_2014_51_unsd.shp") %>% 
-  fortify(region = "NAME") %>% 
-  mutate(id = paste(id, ", Virginia", sep="")) %>% 
-  merge(full_data, by="id", all.y=TRUE) -> virginia.shp 
+file.path("tl_2014_51_unsd", "tl_2014_51_unsd.shp") %>%
+  readShapeSpatial() %>%
+  fortify(region = "NAME") %>%
+  mutate(id = paste(id, ", Virginia", sep="")) %>%
+  merge(full_data, by="id", all.y=TRUE) -> virginia.shp
 
 # Order the rows
 virginia.shp <- virginia.shp[order(virginia.shp$order),]
 
 # Make the maps
-va.reading <- ggplot() + 
-  geom_polygon(data = virginia.shp, aes(x = long, y = lat, group = group, fill = Reading.SOL), color= "black", size = 0.25) + 
+va.reading <- ggplot() +
+  geom_polygon(data = virginia.shp, aes(x = long, y = lat, group = group, fill = Reading.SOL), color= "black", size = 0.25) +
   coord_map() +
   labs(title="Reading SOL Scores in Virginia") +
   scale_fill_distiller(name="Reading SOL", palette = "YlGn", breaks = pretty_breaks(n = 5), trans="reverse")+
   theme_nothing(legend = TRUE)
-va.math <- ggplot() + 
-  geom_polygon(data = virginia.shp, aes(x = long, y = lat, group = group, fill = Math.SOL), color= "black", size = 0.25) + 
+va.math <- ggplot() +
+  geom_polygon(data = virginia.shp, aes(x = long, y = lat, group = group, fill = Math.SOL), color= "black", size = 0.25) +
   coord_map() +
   labs(title="Math SOL Scores in Virginia") +
   scale_fill_distiller(name="Math SOL", palette = "YlGn", breaks = pretty_breaks(n = 5), trans="reverse")+
   theme_nothing(legend = TRUE)
 
 grid.arrange(va.reading, va.math, nrow=2)
-
-
-
-
-
-
-
