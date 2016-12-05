@@ -1,2 +1,4 @@
 *.csv
 school_districts.txt
+*.pdf
+__MACOSX/*

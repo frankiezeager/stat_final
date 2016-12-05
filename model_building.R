@@ -336,12 +336,23 @@ plot(lm.science.full4)
 #residual plot: some definite outliers, but nothing too severe
 #qq plot:may be indicative of non-normality
 
+
+######################################################
+# Look at model summaries for the full models
+
+#summary(lm.reading.full)
+#summary(lm.writing.full2)
+#summary(lm.history.full2)
+#summary(lm.math.full3)
+#summary(lm.science.full4)
+
+
 ###########
 #based on the vif values (removing the least amount of variables),
 #and on the breadth of information , we chose to focus just on the math
 #and reading test models, which we output below into a table
 
-library(stargazer)
+#library(stargazer)
+#stargazer(lm.reading.edu2,lm.reading.county,lm.reading.full,type='text',report='vcp*')
+#stargazer(lm.math.edu2,lm.math.county,lm.math.full3,type='text',report='vcp*')
 
-stargazer(lm.reading.edu2,lm.reading.county,lm.reading.full,type='text',report='vcp*')
-stargazer(lm.math.edu2,lm.math.county,lm.math.full3,type='text',report='vcp*')
