@@ -18,14 +18,15 @@ library(purrr)
 income.read <- ggplot(full_data, aes(x = family_income_median_adj, y = Reading.SOL))
 # p1 <- income.read +geom_point()
 # p1
-income.read <- income.read + geom_point(aes(size=house_worth_dollars_adj))
-income.read #this is neat
+income.read <- income.read + geom_point(aes(size=house_worth_dollars_adj)) #this is neat
+ggsave("income.read.png", income.read)
+
 
 partner.read <- ggplot(full_data, aes(x = unmarried_partner_present_percent, y = Reading.SOL))
 # p3 <- partner.read + geom_point()
 # p3
 partner.read <- partner.read + geom_point(aes(size=family_income_median_adj))
-partner.read
+ggsave("partner.read.png", partner.read)
 
 #income.write <- ggplot(full_data, aes(x = family_income_median_adj, y = Writing.SOL))
 #p5 <- income.write + geom_point(aes(size=house_worth_dollars_adj))
@@ -45,11 +46,12 @@ partner.read
 
 income.math <- ggplot(full_data, aes(x = family_income_median_adj, y = Math.SOL))
 income.math <- income.math + geom_point(aes(size=house_worth_dollars_adj))
-income.math
+ggsave("income.math.png", income.math)
+
 
 partner.math <- ggplot(full_data, aes(x = unmarried_partner_present_percent, y = Math.SOL))
 partner.math <- partner.math + geom_point(aes(size=family_income_median_adj))
-partner.math
+ggsave("partner.math.png", partner.math)
 
 #income.science <- ggplot(full_data, aes(x = family_income_median_adj, y = Science.SOL))
 #p11 <- income.science + geom_point(aes(size=house_worth_dollars_adj))
@@ -69,7 +71,7 @@ partner.math
 #t2
 
 read.math <- ggplot(full_data, aes(x=Math.SOL, y=Reading.SOL)) + geom_point(aes(size=house_worth_dollars_adj))
-read.math
+ggsave("read.math.png", read.math)
 #################################################################################################
 
 ###### SOL SCORE MAPS ########
@@ -106,4 +108,11 @@ va.math <- ggplot() +
   scale_fill_distiller(name="Math SOL", palette = "YlGn", breaks = pretty_breaks(n = 5), trans="reverse")+
   theme_nothing(legend = TRUE)
 
-grid.arrange(va.reading, va.math, nrow=2)
+map_plots <- arrangeGrob(va.reading, va.math, nrow=2)
+# NOTE: http://stackoverflow.com/a/17075381/2601448
+# TL;DR: grid.arrange draws directly on a device. arrangeGrob draw nothing and returns a grob g
+
+ggsave("MathSOL.png", va.math)
+ggsave("ReadingSOL.png", va.reading)
+
+ggsave("map_plots.png", map_plots)
