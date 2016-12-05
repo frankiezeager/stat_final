@@ -23,6 +23,6 @@ clean:
 	rm *.csv
 
 clean-safe:
-	ls *.csv | grep -v acs_acquisition.csv | xargs rm
-	rm *.png
-	rm *.pdf
+	-ls *.csv | grep -v acs_acquisition.csv | xargs rm
+	-rm *.png
+	-rm *.pdf
